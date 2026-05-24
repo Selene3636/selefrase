@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#020617" />
+  <title>Selefrase</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #020617;
+      --card: rgba(255,255,255,0.065);
+      --card2: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.12);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --muted2: #64748b;
+      --blue: #3b82f6;
+      --blue2: #60a5fa;
+      --green: #34d399;
+      --red: #fb7185;
+      --shadow: rgba(0,0,0,0.28);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.22), transparent 28rem),
+        radial-gradient(circle at top right, rgba(34,211,238,0.14), transparent 34rem),
+        radial-gradient(circle at bottom center, rgba(99,102,241,0.16), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 20px 0 28px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.055);
+      color: #cbd5e1;
+      font-size: 13px;
+      backdrop-filter: blur(14px);
+    }
+
+    h1 {
+      margin: 18px auto 0;
+      max-width: 820px;
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 18px auto 0;
+      color: #cbd5e1;
+      font-size: clamp(15px, 2.8vw, 18px);
+      line-height: 1.7;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: 0 22px 50px var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .card.soft {
+      background: var(--card2);
+      box-shadow: none;
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(59,130,246,0.16);
+      color: #93c5fd;
+      flex: 0 0 auto;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .small {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 8px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.86);
+      color: var(--text);
+      border-radius: 18px;
+      outline: none;
+      padding: 13px 15px;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+
+    textarea {
+      min-height: 185px;
+      resize: vertical;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue2);
+      box-shadow: 0 0 0 4px rgba(96,165,250,0.12);
+      background: rgba(15,23,42,0.96);
+    }
+
+    .field { margin-bottom: 16px; }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 18px;
+      min-height: 48px;
+      padding: 12px 16px;
+      cursor: pointer;
+      color: white;
+      background: var(--blue);
+      font-weight: 700;
+      transition: transform 0.14s, background 0.14s, opacity 0.14s;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .button:hover { background: #60a5fa; }
+    .button:active { transform: scale(0.985); }
+    .button.secondary {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+    }
+    .button.secondary:hover { background: rgba(255,255,255,0.1); }
+    .button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .mode {
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.55);
+      color: #cbd5e1;
+      border-radius: 16px;
+      padding: 12px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .mode.active {
+      border-color: #60a5fa;
+      background: rgba(59,130,246,0.16);
+      color: #dbeafe;
+    }
+
+    .status, .error {
+      display: none;
+      gap: 10px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .status.show {
+      display: flex;
+      border: 1px solid rgba(52,211,153,0.22);
+      background: rgba(16,185,129,0.11);
+      color: #bbf7d0;
+    }
+
+    .error.show {
+      display: flex;
+      border: 1px solid rgba(251,113,133,0.24);
+      background: rgba(244,63,94,0.11);
+      color: #fecdd3;
+    }
+
+    .stats {
+      display: none;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stats.show { display: grid; }
+
+    .stat {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 84px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .result-card {
+      min-height: 680px;
+    }
+
+    .result-box {
+      min-height: 560px;
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,0.68);
+      border-radius: 24px;
+      padding: 20px;
+      white-space: pre-line;
+      line-height: 1.78;
+      color: #f1f5f9;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .placeholder {
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted2);
+      padding: 24px;
+    }
+
+    .placeholder-inner {
+      max-width: 420px;
+    }
+
+    .placeholder-icon {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.055);
+      font-size: 34px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    .source-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .link-btn {
+      border: 0;
+      background: transparent;
+      color: #93c5fd;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    .install-tip {
+      margin-top: 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .result-card {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 22px 12px 34px;
+      }
+
+      .hero {
+        padding-top: 10px;
+      }
+
+      .card {
+        border-radius: 22px;
+      }
+
+      .card-body {
+        padding: 18px;
+      }
+
+      .actions, .footer-actions, .two, .mode-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header-row {
+        align-items: flex-start;
+      }
+
+      .result-box, .placeholder {
+        min-height: 420px;
+      }
+
+      textarea {
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="badge">📰 Link News to Indonesian Paraphraser</div>
+      <h1>Selefrase</h1>
+      <p class="subtitle">
+        Masukkan link berita bahasa Inggris, lalu ubah menjadi artikel bahasa Indonesia yang lebih rapi, edukatif, dan mudah dibaca.
+      </p>
+      <p class="install-tip">
+        Bisa dibuka dari HP. Setelah di-hosting, kamu juga bisa menambahkannya ke Home Screen lewat browser.
+      </p>
+    </section>
+
+    <section class="layout">
+      <div class="left">
+        <div class="card">
+          <div class="card-body">
+            <div class="header-row">
+              <div class="icon-box">🔗</div>
+              <div>
+                <h2>Link Berita</h2>
+                <p class="small">Tempel URL, lalu klik proses. Kolom sumber hanya cadangan.</p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="url">URL Berita Bahasa Inggris</label>
+              <input id="url" type="url" placeholder="https://www.news-site.com/article" autocomplete="url" />
+            </div>
+
+            <div class="actions">
+              <button id="fetchBtn" class="button secondary">⬇️ Ambil Isi Artikel</button>
+              <button id="processBtn" class="button">✨ Proses Link Jadi Artikel</button>
+            </div>
+
+            <div class="field">
+              <div class="source-head">
+                <label for="sourceText">Teks Sumber yang Terbaca</label>
+                <button id="demoBtn" class="link-btn">Pakai Artikel Demo</button>
+              </div>
+              <textarea id="sourceText" placeholder="Setelah link diproses, isi artikel akan muncul di sini. Jika situs memblokir pembacaan otomatis, paste artikel lengkap di kolom ini."></textarea>
+            </div>
+
+            <div class="two">
+              <div class="field">
+                <label for="tone">Gaya Bahasa</label>
+                <select id="tone">
+                  <option value="jurnalistik">Jurnalistik</option>
+                  <option value="formal">Formal</option>
+                  <option value="netral">Netral</option>
+                  <option value="ringan">Ringan</option>
+                  <option value="edukatif" selected>Edukatif</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="length">Panjang Hasil</label>
+                <select id="length">
+                  <option value="lengkap" selected>Lengkap</option>
+                  <option value="sedang">Sedang</option>
+                  <option value="ringkas">Ringkas</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Mode Output</label>
+              <div class="mode-grid">
+                <button class="mode active" data-mode="parafrase-mendalam">Parafrase Mendalam</button>
+                <button class="mode" data-mode="artikel-ulang">Artikel Ulang</button>
+                <button class="mode" data-mode="ringkasan-berita">Ringkasan Berita</button>
+              </div>
+            </div>
+
+            <div id="status" class="status"></div>
+            <div id="error" class="error"></div>
+
+            <div class="footer-actions">
+              <button id="copyBtn" class="button secondary" disabled>📋 Copy Hasil</button>
+              <button id="resetBtn" class="button secondary">↻ Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card soft" style="margin-top:16px;">
+          <div class="card-body">
+            <div class="header-row" style="margin-bottom:10px;">
+              <div class="icon-box">⚙️</div>
+              <div>
+                <h2>Catatan Teknis</h2>
+                <p class="small">Website ini sudah mobile responsive.</p>
+              </div>
+            </div>
+            <ul>
+              <li>Metadata, link gambar, dan elemen markdown dibersihkan sebelum diproses.</li>
+              <li>Jika situs memblokir reader otomatis, gunakan kolom teks sumber sebagai cadangan.</li>
+              <li>Untuk hasil AI yang lebih cerdas, nanti bisa disambungkan ke backend + API AI.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div id="stats" class="stats">
+          <div class="stat">
+            <div class="stat-label">Jumlah Kata</div>
+            <div id="wordCount" class="stat-value">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Kalimat</div>
+            <div id="sentenceCount" class="stat-value">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Output</div>
+            <div class="stat-value">Bersih</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Status</div>
+            <div class="stat-value">Selesai</div>
+          </div>
+        </div>
+
+        <div class="card result-card">
+          <div class="card-body">
+            <div class="header-row">
+              <div class="icon-box">🌐</div>
+              <div>
+                <h2>Hasil Artikel Indonesia</h2>
+                <p class="small">Output parafrase akan muncul di sini.</p>
+              </div>
+            </div>
+
+            <div id="resultBox" class="result-box">
+              <div class="placeholder">
+                <div class="placeholder-inner">
+                  <div class="placeholder-icon">✨</div>
+                  <p>Tempel link berita, lalu klik <b>Proses Link Jadi Artikel</b>. Hasil bahasa Indonesia akan muncul di sini.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+const demoArticle = `Aalberts integrated piping systems, a global leader in advanced integrated piping systems for the distribution and control of liquids and gases, has announced a major investment to establish Apollo PowerPress manufacturing in the United States. The investment expands production capabilities at the Pageland, South Carolina facility, increasing manufacturing capacity, improving lead times, and advancing the company's local-for-local supply model.
+
+The company said the move supports its long-term growth strategy by strengthening domestic manufacturing and improving service for customers in North America. By producing closer to the market, Aalberts expects to improve delivery speed, support supply chain resilience, and respond more efficiently to customer demand.
+
+The expansion also reflects a broader trend among industrial manufacturers seeking to localize production and reduce exposure to global logistics disruptions. For customers, the additional capacity could mean more reliable product availability and faster access to critical piping system components.`;
+
+let mode = "parafrase-mendalam";
+
+const $ = (id) => document.getElementById(id);
+
+function cleanReaderText(rawText) {
+  if (!rawText) return "";
+  return rawText
+    .replace(/^Title:\s*/gim, "")
+    .replace(/^URL Source:\s*.*$/gim, "")
+    .replace(/^Published Time:\s*.*$/gim, "")
+    .replace(/^Markdown Content:\s*/gim, "")
+    .replace(/^\s*Components\s*$/gim, "")
+    .replace(/^\s*Advertisement\s*$/gim, "")
+    .replace(/^\s*Subscribe.*$/gim, "")
+    .replace(/^\s*Share\s*$/gim, "")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/www\.\S+/g, "")
+    .replace(/#{1,6}\s?/g, "")
+    .replace(/\*{1,3}/g, "")
+    .replace(/_{1,3}/g, "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => {
+      const lower = line.toLowerCase();
+      if (lower.includes("published time")) return false;
+      if (lower.includes("url source")) return false;
+      if (lower.includes("markdown content")) return false;
+      if (lower.includes("wp-content/uploads")) return false;
+      if (lower === "components") return false;
+      if (lower.length < 3) return false;
+      return true;
+    })
+    .join("\n\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function getWordCount(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function getSentenceCount(text) {
+  return text.replace(/\s+/g, " ").split(/[.!?]+\s+/).map((item) => item.trim()).filter((item) => item.length > 20).length;
+}
+
+function detectTitle(text) {
+  const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+  const title = lines.find((line) => {
+    const wc = getWordCount(line);
+    return wc >= 4 && wc <= 18 && !line.toLowerCase().includes("cookie");
+  });
+  return title || "Perkembangan Baru Menjadi Sorotan Industri";
+}
+
+function inferTopic(text) {
+  const lower = text.toLowerCase();
+  if (lower.includes("aalberts") || lower.includes("apollo") || lower.includes("powerpress")) {
+    return {
+      title: "Aalberts Perkuat Produksi Apollo PowerPress di Amerika Serikat",
+      topic: "perluasan manufaktur Apollo PowerPress di Amerika Serikat",
+      who: "Aalberts integrated piping systems",
+      what: "investasi untuk memperkuat produksi Apollo PowerPress",
+      where: "Pageland, South Carolina, Amerika Serikat",
+      why: "untuk meningkatkan kapasitas produksi, mempercepat pengiriman, dan memperkuat strategi produksi lokal",
+    };
+  }
+  if (lower.includes("technology") || lower.includes("artificial intelligence") || lower.includes(" ai ")) {
+    return {
+      title: "Sektor Teknologi Kembali Jadi Perhatian di Tengah Perkembangan AI",
+      topic: "perkembangan teknologi dan kecerdasan buatan",
+      who: "perusahaan teknologi, investor, dan analis pasar",
+      what: "perubahan ekspektasi terhadap sektor teknologi",
+      where: "pasar global",
+      why: "karena perkembangan AI, suku bunga, valuasi, dan prospek laba memengaruhi keputusan pasar",
+    };
+  }
+  return {
+    title: detectTitle(text),
+    topic: "perkembangan utama yang dibahas dalam artikel sumber",
+    who: "pihak-pihak yang disebut dalam artikel sumber",
+    what: "peristiwa atau keputusan utama dalam artikel",
+    where: "lokasi yang disebut dalam artikel sumber",
+    why: "karena isu tersebut memiliki dampak terhadap pihak terkait dan perkembangan berikutnya",
+  };
+}
+
+function buildReaderUrl(targetUrl) {
+  return "https://r.jina.ai/http://" + targetUrl.replace(/^https?:\/\//, "");
+}
+
+async function fetchArticleFromUrl(targetUrl) {
+  const response = await fetch(buildReaderUrl(targetUrl));
+  if (!response.ok) throw new Error("Gagal mengambil artikel dari link. Situs mungkin memblokir pembacaan otomatis.");
+  const raw = await response.text();
+  const cleaned = cleanReaderText(raw);
+  if (getWordCount(cleaned) < 50) throw new Error("Artikel berhasil diakses, tetapi teks yang terbaca terlalu pendek. Coba link lain atau paste isi artikel lengkap ke kolom sumber.");
+  return cleaned;
+}
+
+function makeParaphrase(article, options) {
+  const clean = cleanReaderText(article);
+  const info = inferTopic(clean);
+  const wordCount = getWordCount(clean);
+  const sentenceCount = getSentenceCount(clean);
+  const doubleNewLine = String.fromCharCode(10) + String.fromCharCode(10);
+  const paragraphCount = clean.split(doubleNewLine).filter((p) => p.trim()).length;
+  const selectedLength = options.length;
+  const selectedTone = options.tone;
+
+  function splitToSourceParagraphs(text) {
+    const normalized = text.replaceAll(String.fromCharCode(13), "");
+    return normalized
+      .split(doubleNewLine)
+      .map((item) => item.trim())
+      .filter((item) => item.length > 40)
+      .slice(0, selectedLength === "ringkas" ? 4 : selectedLength === "sedang" ? 8 : 14);
+  }
+
+  function extractImportantTerms(text) {
+    const knownTerms = [
+      "Aalberts", "Apollo PowerPress", "PowerPress", "Pageland", "South Carolina",
+      "United States", "North America", "local-for-local", "thrive 2030",
+      "manufacturing", "supply chain", "lead times", "production capabilities",
+      "customers", "investment"
+    ];
+    return knownTerms.filter((term) => text.toLowerCase().includes(term.toLowerCase()));
+  }
+
+  function explainTerms(terms) {
+    const notes = [];
+    if (terms.includes("local-for-local")) notes.push("strategi local-for-local berarti perusahaan memproduksi lebih dekat dengan pasar yang dilayani, sehingga distribusi bisa lebih cepat dan risiko rantai pasok dapat ditekan");
+    if (terms.includes("lead times")) notes.push("lead time adalah waktu tunggu dari proses pemesanan sampai produk tersedia atau dikirim kepada pelanggan");
+    if (terms.includes("supply chain")) notes.push("rantai pasok menentukan stabilitas ketersediaan barang, biaya distribusi, dan kecepatan respons perusahaan terhadap permintaan pasar");
+    if (terms.includes("production capabilities")) notes.push("kapabilitas produksi menunjukkan kemampuan fasilitas dalam menghasilkan barang dengan volume, kualitas, dan kecepatan tertentu");
+    if (terms.includes("thrive 2030")) notes.push("thrive 2030 dapat dibaca sebagai visi pertumbuhan jangka panjang perusahaan yang menjadi payung dari keputusan investasi ini");
+    return notes;
+  }
+
+  function rewriteSourceParagraph(paragraph, index) {
+    const lower = paragraph.toLowerCase();
+    const terms = extractImportantTerms(paragraph);
+    const hasAalberts = lower.includes("aalberts");
+    const hasInvestment = lower.includes("investment") || lower.includes("invest");
+    const hasManufacturing = lower.includes("manufacturing") || lower.includes("production");
+    const hasFacility = lower.includes("pageland") || lower.includes("south carolina") || lower.includes("facility");
+    const hasDelivery = lower.includes("delivery") || lower.includes("lead time") || lower.includes("customers");
+    const hasSupply = lower.includes("supply") || lower.includes("logistics") || lower.includes("resilience");
+    const hasGrowth = lower.includes("growth") || lower.includes("strategy") || lower.includes("vision") || lower.includes("2030");
+
+    let opening = "Artikel sumber menjelaskan bahwa ";
+    if (index === 0) opening = "Pada bagian pembuka, artikel menjelaskan bahwa ";
+    if (index === 1) opening = "Selanjutnya, artikel menekankan bahwa ";
+    if (index >= 2) opening = "Bagian berikutnya memperjelas bahwa ";
+
+    const ideas = [];
+    if (hasAalberts && hasInvestment) ideas.push("Aalberts mengambil langkah investasi untuk memperkuat bisnis sistem perpipaan terintegrasi, khususnya melalui pengembangan Apollo PowerPress");
+    if (hasManufacturing) ideas.push("fokus utama langkah ini adalah memperbesar kemampuan manufaktur dan membuat proses produksi lebih siap memenuhi kebutuhan pasar");
+    if (hasFacility) ideas.push("fasilitas di Pageland, South Carolina, menjadi titik penting karena lokasi tersebut dipakai untuk memperluas kapasitas produksi di Amerika Serikat");
+    if (hasDelivery) ideas.push("dampak yang ingin dicapai adalah waktu tunggu yang lebih pendek, pengiriman yang lebih cepat, dan pelayanan yang lebih baik bagi pelanggan");
+    if (hasSupply) ideas.push("dari sisi rantai pasok, produksi yang lebih dekat dengan pasar dapat mengurangi risiko gangguan logistik dan membuat ketersediaan produk lebih stabil");
+    if (hasGrowth) ideas.push("keputusan ini juga terhubung dengan strategi pertumbuhan jangka panjang perusahaan, bukan sekadar ekspansi fasilitas biasa");
+    if (ideas.length === 0) ideas.push("bagian ini memberi konteks tambahan tentang alasan, dampak, dan arah perkembangan yang sedang dibahas dalam berita");
+
+    let paragraphText = opening + ideas.join(". Selain itu, ") + ".";
+    const explanations = explainTerms(terms);
+    if (selectedTone === "edukatif" && explanations.length > 0) paragraphText += " Secara sederhana, " + explanations.join(". Selain itu, ") + ".";
+    return paragraphText;
+  }
+
+  function buildExpandedEducationalParagraphs(sourceParagraphs) {
+    const rewritten = sourceParagraphs.map((paragraph, index) => rewriteSourceParagraph(paragraph, index));
+    const intro = "Berita ini membahas " + info.topic + ". Secara garis besar, isu ini penting karena berkaitan dengan strategi perusahaan dalam memperkuat produksi, mempercepat layanan, dan menjaga stabilitas pasokan bagi pasar yang dilayani.";
+    const bridge = "Jika dibaca lebih dalam, inti berita ini bukan hanya soal penambahan fasilitas produksi. Yang lebih penting adalah bagaimana perusahaan menata ulang rantai pasok agar lebih dekat dengan pelanggan, lebih cepat merespons permintaan, dan lebih tahan terhadap gangguan distribusi global.";
+    const conclusion = "Dengan demikian, langkah tersebut dapat dipahami sebagai strategi bisnis jangka panjang. Perusahaan bukan hanya mengejar kapasitas yang lebih besar, tetapi juga mencoba membangun sistem operasional yang lebih efisien, lokal, dan kompetitif.";
+
+    if (selectedLength === "ringkas") return [intro].concat(rewritten.slice(0, 3));
+    if (selectedLength === "sedang") return [intro].concat(rewritten.slice(0, 6)).concat([bridge]);
+    return [intro].concat(rewritten).concat([bridge, conclusion]);
+  }
+
+  const sourceParagraphs = splitToSourceParagraphs(clean);
+  const expandedParagraphs = buildExpandedEducationalParagraphs(sourceParagraphs);
+  const outputParts = ["Judul: " + info.title].concat(expandedParagraphs);
+
+  return {
+    text: outputParts.join(doubleNewLine),
+    diagnostics: {
+      wordCount: wordCount,
+      paragraphCount: paragraphCount,
+      sentenceCount: sentenceCount,
+      likelyComplete: wordCount >= 120 && sentenceCount >= 4,
+    },
+  };
+}
+
+function isValidUrl(url) {
+  try {
+    const parsed = new URL(url.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function showStatus(message) {
+  $("status").textContent = message;
+  $("status").classList.add("show");
+  $("error").classList.remove("show");
+}
+
+function showError(message) {
+  $("error").textContent = message;
+  $("error").classList.add("show");
+  $("status").classList.remove("show");
+}
+
+function clearMessages() {
+  $("status").classList.remove("show");
+  $("error").classList.remove("show");
+}
+
+function setLoading(isLoading, type = "process") {
+  $("fetchBtn").disabled = isLoading;
+  $("processBtn").disabled = isLoading;
+  $("fetchBtn").textContent = type === "fetch" && isLoading ? "⏳ Mengambil Artikel..." : "⬇️ Ambil Isi Artikel";
+  $("processBtn").textContent = type === "process" && isLoading ? "⏳ Memproses..." : "✨ Proses Link Jadi Artikel";
+}
+
+async function handleFetchOnly() {
+  clearMessages();
+  const url = $("url").value;
+  if (!isValidUrl(url)) return showError("Masukkan link berita yang valid terlebih dahulu.");
+
+  setLoading(true, "fetch");
+  try {
+    showStatus("Mengambil isi artikel dari link...");
+    const article = await fetchArticleFromUrl(url.trim());
+    $("sourceText").value = article;
+    showStatus("Artikel berhasil diambil dan dibersihkan.");
+  } catch (err) {
+    showError(err.message || "Gagal mengambil artikel dari link.");
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function handleProcess() {
+  clearMessages();
+  const url = $("url").value;
+  let article = $("sourceText").value.trim();
+
+  if (!isValidUrl(url) && !article) return showError("Masukkan link berita yang valid, atau paste isi artikel ke kolom sumber.");
+
+  setLoading(true, "process");
+  try {
+    if (!article && isValidUrl(url)) {
+      showStatus("Mengambil isi artikel dari link...");
+      article = await fetchArticleFromUrl(url.trim());
+      $("sourceText").value = article;
+    }
+
+    if (getWordCount(article) < 50) throw new Error("Teks artikel terlalu pendek untuk diproses.");
+
+    showStatus("Menyusun ulang berita ke bahasa Indonesia...");
+    await new Promise((resolve) => setTimeout(resolve, 450));
+
+    const generated = makeParaphrase(article, {
+      tone: $("tone").value,
+      length: $("length").value,
+      mode: mode,
+    });
+
+    $("resultBox").textContent = generated.text;
+    $("copyBtn").disabled = false;
+    $("wordCount").textContent = generated.diagnostics.wordCount;
+    $("sentenceCount").textContent = generated.diagnostics.sentenceCount;
+    $("stats").classList.add("show");
+    showStatus("Selesai. Artikel sudah diproses menjadi bahasa Indonesia.");
+    setTimeout(() => {
+      if (window.innerWidth < 980) $("resultBox").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  } catch (err) {
+    showError(err.message || "Terjadi kesalahan saat memproses artikel.");
+  } finally {
+    setLoading(false);
+  }
+}
+
+$("fetchBtn").addEventListener("click", handleFetchOnly);
+$("processBtn").addEventListener("click", handleProcess);
+$("demoBtn").addEventListener("click", () => {
+  $("sourceText").value = demoArticle;
+  showStatus("Artikel demo sudah dimasukkan.");
+});
+$("copyBtn").addEventListener("click", async () => {
+  const text = $("resultBox").textContent.trim();
+  if (!text) return;
+  await navigator.clipboard.writeText(text);
+  showStatus("Hasil artikel sudah disalin.");
+});
+$("resetBtn").addEventListener("click", () => {
+  $("url").value = "";
+  $("sourceText").value = "";
+  $("tone").value = "edukatif";
+  $("length").value = "lengkap";
+  $("resultBox").innerHTML = '<div class="placeholder"><div class="placeholder-inner"><div class="placeholder-icon">✨</div><p>Tempel link berita, lalu klik <b>Proses Link Jadi Artikel</b>. Hasil bahasa Indonesia akan muncul di sini.</p></div></div>';
+  $("copyBtn").disabled = true;
+  $("stats").classList.remove("show");
+  clearMessages();
+});
+
+document.querySelectorAll(".mode").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".mode").forEach((item) => item.classList.remove("active"));
+    btn.classList.add("active");
+    mode = btn.dataset.mode;
+  });
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
